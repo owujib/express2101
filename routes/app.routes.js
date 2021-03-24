@@ -1,4 +1,6 @@
 const express = require('express');
+const multer = require('multer');
+const path = require('path');
 
 const router = express.Router();
 
@@ -20,9 +22,30 @@ router.get('/contact-us', (req, res, next) => {
   });
 });
 
-router.post('/message', (req, res, next) => {
+const storage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    return callback(null, 'uploads/student-img/');
+  },
+  filename: (req, file, callback) => {
+    return callback(null, `${Date.now()}-${file.originalname}`);
+  },
+  fileFilter: (req, file, callback) => {
+    const ext = path.extname(file.originalname);
+    if (ext !== '.jpg' || ext !== '.png' || ext !== '.jfif') {
+      return callback(
+        res.status(400).end('only jpg, png and jfif are allowed'),
+        false
+      );
+    }
+    return callback(null, true);
+  },
+});
+const upload = multer({ storage });
+
+router.post('/message', upload.single('contactImg'), (req, res, next) => {
   console.log(req.body);
-  res.send(req.body);
+  console.log(req.file);
+  res.send({ ...req.body, ...req.file });
 });
 
 module.exports = router;

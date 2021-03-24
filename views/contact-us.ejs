@@ -6,12 +6,20 @@
   <body>
     <%- include('./includes/nav.ejs') %>
     <h1>Contact us</h1>
-    <form action="/message" method="POST" class="container">
+    <form
+      action="/message"
+      method="POST"
+      class="container"
+      enctype="multipart/form-data"
+    >
       <div class="form-group">
         <input class="form-control" name="fullname" type="text" />
       </div>
       <div class="form-group">
         <input class="form-control" name="email" type="text" />
+      </div>
+      <div class="form-group">
+        <input class="form-control" name="contactImg" type="file" />
       </div>
       <div class="form-group">
         <textarea
