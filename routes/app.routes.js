@@ -22,29 +22,33 @@ router.get('/contact-us', (req, res, next) => {
   });
 });
 
+
+
+
+///handle file uploads
+
 const storage = multer.diskStorage({
-  destination: (req, file, callback) => {
-    return callback(null, 'uploads/student-img/');
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/student-img/');
   },
-  filename: (req, file, callback) => {
-    return callback(null, `${Date.now()}-${file.originalname}`);
-  },
-  fileFilter: (req, file, callback) => {
-    const ext = path.extname(file.originalname);
-    if (ext !== '.jpg' || ext !== '.png' || ext !== '.jfif') {
-      return callback(
-        res.status(400).end('only jpg, png and jfif are allowed'),
-        false
-      );
-    }
-    return callback(null, true);
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
-const upload = multer({ storage });
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+
+    if (ext !== '.jpg' || ext !== '.png' || ext !== '.jfif') {
+      return cb(new Error('only jpg, png and jfif are allowed'), false);
+    }
+
+    cb(null, true);
+  },
+});
 
 router.post('/message', upload.single('contactImg'), (req, res, next) => {
-  console.log(req.body);
-  console.log(req.file);
   res.send({ ...req.body, ...req.file });
 });
 
