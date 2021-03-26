@@ -2,7 +2,11 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 
+const { myRequestMiddleWare } = require('../controller/example');
+
 const router = express.Router();
+
+router.use(myRequestMiddleWare);
 
 router.get('/', (req, res, next) => {
   res.render('index.ejs', {
@@ -21,9 +25,6 @@ router.get('/contact-us', (req, res, next) => {
     title: 'Contact us',
   });
 });
-
-
-
 
 ///handle file uploads
 
