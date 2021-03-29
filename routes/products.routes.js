@@ -15,7 +15,7 @@ router.get('/', getAllProduct);
 
 router.get('/:id', getSingleProduct);
 
-router.patch('/update/:id', updateProduct);
+router.patch('/update/:id', upload.single('productImg'), updateProduct);
 router.delete('/delete/:id', deleteProduct);
 
 module.exports = router;

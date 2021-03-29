@@ -1,4 +1,6 @@
 const Product = require('../models/Product');
+const ApiError = require('../utils/apiError');
+const { createProductValidation } = require('../utils/validation');
 
 //CREATE PRODUCT
 /**
@@ -13,6 +15,10 @@ exports.createProduct = async (req, res, next) => {
       ...req.body,
       productImg: `/product-img/${req.file.filename}`,
     };
+    const { error } = createProductValidation(newProduct);
+    if (error) {
+      return next(new ApiError(error, 401));
+    }
     const product = await Product.create(newProduct);
     res.status(201).json({
       status: 'success',
@@ -72,9 +78,13 @@ exports.getSingleProduct = async (req, res, next) => {
 
 exports.updateProduct = async (req, res, next) => {
   try {
+    const updatedProduct = {
+      ...req.body,
+      productImg: `/product-img/${req.file.filename}`,
+    };
     const product = await Product.findByIdAndUpdate(
       { _id: req.params.id },
-      req.body,
+      updatedProduct,
       { new: true }
     );
 

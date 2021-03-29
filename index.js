@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const homeRoute = require('./routes/app.routes');
 const studentRoute = require('./routes/student.routes');
 const productRoute = require('./routes/products.routes');
+const ApiError = require('./utils/apiError');
 
 const app = express();
 
@@ -29,7 +30,19 @@ app.use('/api/product', productRoute);
 
 //handle all https 404 error
 app.all('*', (req, res, next) => {
-  res.send('<h1>404 page not found 😢😢</h1>');
+  next(new ApiError('oops page not found', 404));
+});
+
+//global error handler
+app.use((err, req, res, next) => {
+  err.statusCode = err.statusCode || 500;
+  err.status = err.status || 'error';
+  res.status(err.statusCode).json({
+    status: err.status,
+    error: err,
+    message: err.message,
+    stack: err.stack,
+  });
 });
 
 const PORT = 3000;
