@@ -1,9 +1,19 @@
 const Product = require('../models/Product');
 
 //CREATE PRODUCT
+/**
+ *
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ */
 exports.createProduct = async (req, res, next) => {
   try {
-    const product = await Product.create(req.body);
+    const newProduct = {
+      ...req.body,
+      productImg: `/product-img/${req.file.filename}`,
+    };
+    const product = await Product.create(newProduct);
     res.status(201).json({
       status: 'success',
       message: product,
@@ -13,6 +23,12 @@ exports.createProduct = async (req, res, next) => {
   }
 };
 
+/**
+ *
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ */
 //GET ALL PRODUCTS
 exports.getAllProduct = async (req, res, next) => {
   try {
@@ -27,6 +43,12 @@ exports.getAllProduct = async (req, res, next) => {
   }
 };
 
+/**
+ *
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ */
 //GET SINGLE PRODUCT
 exports.getSingleProduct = async (req, res, next) => {
   try {
@@ -40,6 +62,13 @@ exports.getSingleProduct = async (req, res, next) => {
     next(error);
   }
 };
+
+/**
+ *
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ */
 
 exports.updateProduct = async (req, res, next) => {
   try {
@@ -57,6 +86,13 @@ exports.updateProduct = async (req, res, next) => {
     next(error);
   }
 };
+
+/**
+ *
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ */
 exports.deleteProduct = async (req, res, next) => {
   try {
     const product = await Product.findByIdAndDelete({ _id: req.params.id });

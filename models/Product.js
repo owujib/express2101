@@ -4,6 +4,7 @@ const productSchema = new mongoose.Schema({
   name: {
     type: String,
     unique: true,
+    // unique: [true, 'a product must be unique'],
     required: [
       true,
       'a product must have a name. \n  Error: name can not be empty',

@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const upload = require('../utils/fileUpload');
 
 const {
   createProduct,
@@ -8,7 +9,7 @@ const {
   deleteProduct,
 } = require('../controller/products.controller');
 
-router.post('/create', createProduct);
+router.post('/create', upload.single('productImg'), createProduct);
 
 router.get('/', getAllProduct);
 

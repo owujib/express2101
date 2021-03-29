@@ -17,6 +17,9 @@ app.set('views', path.join(__dirname, '/views'));
 // app.use('/static', express.static('./public'));
 app.use('/', express.static(path.join(__dirname, '/public'))); // default  to "/"
 
+//static dir for uploads
+app.use('/', express.static(path.join(__dirname, '/uploads')));
+
 //ROUTES
 app.use('/', homeRoute);
 app.use('/students', studentRoute);

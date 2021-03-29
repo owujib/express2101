@@ -7,7 +7,8 @@
  */
 
 exports.myRequestMiddleWare = (req, res, next) => {
-  console.log(req);
+  let requestTime = new Date();
+  console.log(requestTime);
   return next();
 };
 

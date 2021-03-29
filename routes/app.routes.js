@@ -41,8 +41,9 @@ const upload = multer({
   fileFilter: (req, file, cb) => {
     const ext = path.extname(file.originalname);
 
-    if (ext !== '.jpg' || ext !== '.png' || ext !== '.jfif') {
-      return cb(new Error('only jpg, png and jfif are allowed'), false);
+    if (ext == '.jpg' || ext == '.png' || ext == '.jfif') {
+      return cb(new Error('only jpg, png and jfif are allowed'), true);
+    } else {
     }
 
     cb(null, true);
