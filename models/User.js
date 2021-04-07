@@ -33,6 +33,22 @@ const userSchema = new mongoose.Schema(
       enum: ['admin', 'user'],
       default: 'user',
     },
+
+    cart: {
+      items: [
+        {
+          product: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Product',
+            required: true,
+          },
+          quantity: {
+            type: Number,
+            required: true,
+          },
+        },
+      ],
+    },
   },
   { timestamps: true }
 );
@@ -57,6 +73,33 @@ userSchema.methods.correctPassword = async (inputPassword, userPassword) => {
   return validPassword;
 };
 
+userSchema.methods.addToCart = async function (product) {
+  //check if product exist in cart
+  const cartItemIndex = this.cart.items.findIndex((cart) => {
+    return cart.product._id.toString() === product._id.toString();
+  });
+
+  let newQuantity = 1;
+  const updatedCartItems = [...this.cart.items];
+
+  if (cartItemIndex >= 0) {
+    newQuantity = this.cart.items[cartItemIndex].quantity + 1;
+
+    updatedCartItems[cartItemIndex].quantity = newQuantity;
+  } else {
+    updatedCartItems.push({
+      product,
+      quantity: newQuantity,
+    });
+  }
+
+  const updatedCart = {
+    items: updatedCartItems,
+  };
+  this.cart = updatedCart;
+
+  return await this.save();
+};
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;

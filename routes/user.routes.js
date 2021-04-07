@@ -7,6 +7,8 @@ const {
   updatePassword,
 } = require('../controller/auth.controller');
 
+const { addToCart } = require('../controller/user.controller');
+
 router.post('/register', register);
 router.post('/login', login);
 
@@ -19,4 +21,6 @@ router.get('/profile', authorization, (req, res, next) => {
     message: req.user,
   });
 });
+
+router.get('/add/cart/:id', authorization, addToCart);
 module.exports = router;
