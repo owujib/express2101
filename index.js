@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const homeRoute = require('./routes/app.routes');
 const studentRoute = require('./routes/student.routes');
 const productRoute = require('./routes/products.routes');
+const userRoute = require('./routes/user.routes');
 const ApiError = require('./utils/apiError');
 
 const app = express();
@@ -27,6 +28,7 @@ app.use('/students', studentRoute);
 
 //api route
 app.use('/api/product', productRoute);
+app.use('/api/user', userRoute);
 
 //handle all https 404 error
 app.all('*', (req, res, next) => {

@@ -1,6 +1,9 @@
 const Product = require('../models/Product');
 const ApiError = require('../utils/apiError');
-const { createProductValidation } = require('../utils/validation');
+const {
+  createProductValidation,
+  updateProductValidation,
+} = require('../utils/validation');
 
 //CREATE PRODUCT
 /**
@@ -78,10 +81,23 @@ exports.getSingleProduct = async (req, res, next) => {
 
 exports.updateProduct = async (req, res, next) => {
   try {
-    const updatedProduct = {
-      ...req.body,
-      productImg: `/product-img/${req.file.filename}`,
-    };
+    let updatedProduct;
+
+    if (!req.file) {
+      updatedProduct = {
+        ...req.body,
+      };
+    } else {
+      updatedProduct = {
+        ...req.body,
+        productImg: `/product-img/${req.file.filename} `,
+      };
+    }
+    const { error } = updateProductValidation(updatedProduct);
+    if (error) {
+      return next(new ApiError(error, 400));
+    }
+
     const product = await Product.findByIdAndUpdate(
       { _id: req.params.id },
       updatedProduct,
@@ -106,6 +122,8 @@ exports.updateProduct = async (req, res, next) => {
 exports.deleteProduct = async (req, res, next) => {
   try {
     const product = await Product.findByIdAndDelete({ _id: req.params.id });
+
+    //this should also be able to delete the product image
 
     res.status(200).json({
       status: 'success',

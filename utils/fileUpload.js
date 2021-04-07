@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage: storage,
-  limits: (req, file, callback) => {}, //assignment is to make sure file size is not more than 5mb
+  limits: { fileSize: 100000 }, //assignment is to make sure file size is not more than 5mb
   fileFilter: (req, file, callback) => {
     const fileExtension = path.extname(file.originalname);
     console.log(fileExtension);
