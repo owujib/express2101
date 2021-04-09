@@ -11,13 +11,14 @@ const {
 
 const { roles, authorization } = require('../controller/auth.controller');
 
-router.post(
-  '/create',
-  authorization,
-  roles('admin'), //this restricts a user from creating product note only admin can
-  upload.single('productImg'),
-  createProduct
-);
+router.post('/create', upload.single('productImg'), createProduct);
+// router.post(
+//   '/create',
+//   authorization,
+//   roles('admin'), //this restricts a user from creating product note only admin can
+//   upload.single('productImg'),
+//   createProduct
+// );
 
 router.get('/', getAllProduct);
 

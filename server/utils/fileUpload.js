@@ -1,5 +1,6 @@
 const multer = require('multer');
 const path = require('path');
+const ApiError = require('./apiError');
 
 const storage = multer.diskStorage({
   destination: function (req, file, callback) {
@@ -27,7 +28,12 @@ const upload = multer({
     ) {
       callback(null, true);
     } else {
-      callback('error file not supported please upload png, jpeg, jpg');
+      callback(
+        new ApiError(
+          'error file not supported please upload png, jpeg, jpg',
+          400
+        )
+      );
     }
   },
 });

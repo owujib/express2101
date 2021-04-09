@@ -18,9 +18,10 @@ exports.createProduct = async (req, res, next) => {
       ...req.body,
       productImg: `/product-img/${req.file.filename}`,
     };
+    console.log(newProduct);
     const { error } = createProductValidation(newProduct);
     if (error) {
-      return next(new ApiError(error, 401));
+      return next(new ApiError(error, 400));
     }
     const product = await Product.create(newProduct);
     res.status(201).json({

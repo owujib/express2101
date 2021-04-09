@@ -1,6 +1,9 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const cors = require('cors');
+
+require('dotenv').config();
 
 const homeRoute = require('./routes/app.routes');
 const studentRoute = require('./routes/student.routes');
@@ -10,8 +13,9 @@ const ApiError = require('./utils/apiError');
 
 const app = express();
 
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors());
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
@@ -20,7 +24,7 @@ app.set('views', path.join(__dirname, '/views'));
 app.use('/', express.static(path.join(__dirname, '/public'))); // default  to "/"
 
 //static dir for uploads
-app.use('/', express.static(path.join(__dirname, '/uploads')));
+app.use('/', express.static('uploads'));
 
 //ROUTES
 app.use('/', homeRoute);
@@ -47,11 +51,18 @@ app.use((err, req, res, next) => {
   });
 });
 
-const PORT = 3000;
+console.log({ NODE_ENV: process.env.NODE_ENV });
+
+const PORT = process.env.PORT || 4000;
+
+let dbString;
+process.env.NODE_ENV !== 'production'
+  ? (dbString = process.env.MONGO_LOCAL)
+  : (dbString = process.env.MONGO_URI);
 
 //database connection
 mongoose
-  .connect('mongodb://127.0.0.1:27017/esales', {
+  .connect(dbString, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
