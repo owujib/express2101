@@ -1,4 +1,4 @@
-import { Button, Col, Card, Row } from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
 
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
@@ -10,7 +10,7 @@ export class Home extends Component {
 
     const productList = products.slice(0, 3).map((product) => {
       return (
-        <Col md={4}>
+        <Col md={4} key={product._id}>
           <CardList {...product} />
         </Col>
       );

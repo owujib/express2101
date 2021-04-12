@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CardList from './CardList';
 import { Row, Col } from 'react-bootstrap';
+import { authenticationService } from '../services/authentication.service';
 
 export class ProductList extends Component {
   render() {
@@ -12,6 +13,7 @@ export class ProductList extends Component {
         </Col>
       );
     });
+    console.log(authenticationService.currentUserValue);
     return (
       <div>
         <Row>{productList}</Row>

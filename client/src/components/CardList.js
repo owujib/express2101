@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Card, Row } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 export default function CardList({ _id, name, productImg, description }) {
@@ -8,10 +8,12 @@ export default function CardList({ _id, name, productImg, description }) {
       <Card>
         <Card.Img variant="top" src={`http://localhost:4000/${productImg}`} />
         <Card.Body>
-          <Card.Title>{name}</Card.Title>
+          <Card.Title>
+            <Link to={'/product/' + _id}>{name}</Link>
+          </Card.Title>
           <Card.Text>{description.slice(0, 30)}</Card.Text>
-          <Button variant="dark" as={Link} to={'/product/' + _id}>
-            View more
+          <Button variant="warning" as={Link} to={'/product/' + _id}>
+            add to cart
           </Button>
         </Card.Body>
       </Card>

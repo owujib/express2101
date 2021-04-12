@@ -50,7 +50,7 @@ exports.login = async (req, res, next) => {
 
     //check if user record does not exist in db
     if (!user) {
-      return next(new ApiError('user does not exist', 404));
+      return next(new ApiError('user does not exist', 401));
     }
 
     // //check for correct password
@@ -61,7 +61,9 @@ exports.login = async (req, res, next) => {
       user.password
     ); //return true // false
 
-    if (!correctPassword) next(new ApiError('invalid details', 400));
+    if (!correctPassword) {
+      return next(new ApiError('invalid details', 403));
+    }
 
     // //creating token
     let token = signToken(user._id);

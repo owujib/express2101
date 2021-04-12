@@ -25,36 +25,38 @@ export class ProductDetail extends Component {
   }
   render() {
     return (
-      <div>
-        <h1>product details for {this.state.product.name}</h1>
+      <div className="">
+        <h1 className="text-center">
+          product details for {this.state.product.name}
+        </h1>
 
-        <Card
-          style={{ width: '50%', display: 'flex', justifyContent: 'center' }}
-          className="d-flex justify-content-center"
-        >
-          <Card.Img
-            variant="top"
-            src={`http://localhost:4000/${this.state.product.productImg}`}
-          />
-          <Card.Body>
-            <Card.Title>{this.state.product.name}</Card.Title>
-            <Card.Text>{this.state.product.description}</Card.Text>
-            <Button
-              variant="secondary"
-              as={Link}
-              to={'/product/' + this.state.product._id}
-            >
-              edit
-            </Button>
-            <Button
-              variant="danger"
-              as={Link}
-              to={'/product/' + this.state.product._id}
-            >
-              delete
-            </Button>
-          </Card.Body>
-        </Card>
+        <div className="container my-5 ">
+          <Card className="d-flex justify-content-center shadow">
+            <Card.Img
+              variant="top"
+              src={`http://localhost:4000/${this.state.product.productImg}`}
+            />
+            <Card.Body>
+              <Card.Title>{this.state.product.name}</Card.Title>
+              <Card.Text>{this.state.product.description}</Card.Text>
+              <Button
+                variant="secondary"
+                as={Link}
+                to={'/product/' + this.state.product._id}
+              >
+                edit
+              </Button>
+              <Button
+                variant="danger"
+                className="mx-2"
+                as={Link}
+                to={'/product/' + this.state.product._id}
+              >
+                delete
+              </Button>
+            </Card.Body>
+          </Card>
+        </div>
       </div>
     );
   }
